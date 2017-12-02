@@ -3,11 +3,15 @@
 This package provides the same api as node-rpi-rgb-led-matrix but outputs to a
 canvas in a browser.
 
+Install with the following command
+
+````npm install therealshark/node-rpi-rgb-led-matrix-simulate````
+
 # Example
 
 ```
 //const LedMatrix = require("node-rpi-rgb-led-matrix");
-const LedMatrix = require("therealshark/node-rpi-rgb-led-matrix-simulate");
+const LedMatrix = require("node-rpi-rgb-led-matrix-simulate");
 
 const matrix = new LedMatrix(32, 4);
 
