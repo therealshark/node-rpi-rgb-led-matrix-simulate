@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>LED</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      background: black;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="led">
+
+  </canvas>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    (function () {
+      const scale = 8;
+      const padding = 2;
+      const canvas = document.getElementById("led");
+      const ctx = canvas.getContext("2d");
+      let oldCanvasWidth, oldCanvasHeight;
+      let grid;
+      let updateQueued = false;
+
+      const filler = '000000';
+
+      const socket = io();
+      socket.on('update', function (data) {
+        grid = data;
+        if (!updateQueued) {
+          updateQueued = true;
+          window.requestAnimationFrame(renderLeds)
+        }
+      });
+
+      const renderLeds = () => {
+        const width = grid.length;
+        const height = grid[0].length;
+
+        const canvasWidth = width * (scale + padding) + padding;
+        const canvasHeight = height * (scale + padding) + padding;
+
+        if (canvasHeight !== oldCanvasHeight || canvasWidth !== oldCanvasWidth) {
+          canvas.width = canvasWidth;
+          canvas.height = canvasHeight;
+          oldCanvasWidth = canvasWidth;
+          oldCanvasHeight = canvasHeight;
+        }
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        for (let x = 0; x < width; x++) {
+          for (let y = 0; y < height; y++) {
+            const color = grid[x][y].toString(16);
+            ctx.fillStyle = '#' + filler.substr(0, 6 - color.length) + color;
+            //ctx.fillRect(padding + x * (scale + padding), padding + y * (scale + padding), scale, scale);
+            ctx.beginPath();
+            ctx.arc(padding + x * (scale + padding) + scale / 2, padding + y * (scale + padding) + scale / 2, scale / 2, 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        }
+
+        updateQueued = false;
+      };
+    })();
+  </script>
+</body>
+
+</html>

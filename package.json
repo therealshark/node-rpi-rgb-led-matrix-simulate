@@ -1,0 +1,16 @@
+{
+  "name": "node-rpi-rgb-led-matrix-simulate",
+  "version": "1.0.0",
+  "description":
+    "Provides the same interface as the node-rpi-rgb-led-matrix but outputs to a canvas in a browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "theshark",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
